@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Home extends Model
+class Galeri extends Model
 {
     use HasFactory;
 
-    
-    protected $table = 'home';
-
+    protected $table = 'galeri'; // nama tabel di DB
     protected $fillable = [
-        'main_image',
-        'title',
-        'desc',
+        'image',
+        'caption', // ditambahkan supaya bisa diisi mass assignment
     ];
 }

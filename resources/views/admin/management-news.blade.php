@@ -1,7 +1,7 @@
 @extends('admin-layouts.app')
 
-@section('title', 'Dashboard')
-@section('page-title', 'Dashboard')
+@section('title', 'News Management')
+@section('page-title', 'News Management')
 
 @section('content')
 <div class="row">
@@ -15,15 +15,15 @@
       <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    {{-- Card Tambah Data --}}
+    {{-- Card Tambah News --}}
     <div class="card mb-4">
-      <div class="card-header">Tambah Data Home</div>
+      <div class="card-header">Tambah News</div>
       <div class="card-body">
-        <form action="{{ route('home.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="mb-3">
-            <label>Main Image</label>
-            <input type="file" name="main_image" class="form-control" required>
+            <label>Gambar</label>
+            <input type="file" name="image" class="form-control" required>
           </div>
           <div class="mb-3">
             <label>Title</label>
@@ -40,68 +40,67 @@
 
     {{-- Card Data List --}}
     <div class="card">
-      <div class="card-header">Daftar Home</div>
+      <div class="card-header">Daftar News</div>
       <div class="card-body">
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>No</th>
-              <th>Image</th>
+              <th>Gambar</th>
               <th>Title</th>
               <th>Description</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            @forelse($homes as $index => $home)
+            @forelse($news as $index => $item)
               <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>
-                  @if($home->main_image)
-                    <img src="{{ asset('storage/' . $home->main_image) }}" width="100">
+                  @if($item->image)
+                    <img src="{{ asset('storage/' . $item->image) }}" width="100">
                   @endif
                 </td>
-                <td>{{ $home->title }}</td>
-                <td>{{ $home->desc }}</td>
+                <td>{{ $item->title }}</td>
+                <td>{{ $item->desc }}</td>
                 <td>
                   {{-- Tombol Edit --}}
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $home->id }}">Edit</button>
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Edit</button>
 
                   {{-- Tombol Delete --}}
-                  <form action="{{ route('home.destroy', $home->id) }}" method="POST" class="d-inline">
+                  <form action="{{ route('news.destroy', $item->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
+                    <button type="submit" onclick="return confirm('Yakin hapus news ini?')" class="btn btn-danger btn-sm">Hapus</button>
                   </form>
                 </td>
               </tr>
 
               {{-- Modal Edit --}}
-              <div class="modal fade" id="editModal{{ $home->id }}" tabindex="-1" aria-hidden="true">
+              <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Edit Data</h5>
+                      <h5 class="modal-title">Edit News</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                      <form action="{{ route('home.update', $home->id) }}" method="POST" enctype="multipart/form-data">
+                      <form action="{{ route('news.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <div class="mb-3">
-                          <label>Main Image</label>
-                          <input type="file" name="main_image" class="form-control">
-                          @if($home->main_image)
-                            <img src="{{ asset('storage/' . $home->main_image) }}" width="100" class="mt-2">
+                          <label>Gambar Baru</label>
+                          <input type="file" name="image" class="form-control">
+                          @if($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" width="100" class="mt-2">
                           @endif
                         </div>
                         <div class="mb-3">
                           <label>Title</label>
-                          <input type="text" name="title" value="{{ $home->title }}" class="form-control" required>
+                          <input type="text" name="title" value="{{ $item->title }}" class="form-control" required>
                         </div>
                         <div class="mb-3">
                           <label>Description</label>
-                          <textarea name="desc" class="form-control" rows="3" required>{{ $home->desc }}</textarea>
+                          <textarea name="desc" class="form-control" rows="3" required>{{ $item->desc }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-success">Update</button>
                       </form>
@@ -112,7 +111,7 @@
               {{-- End Modal --}}
             @empty
               <tr>
-                <td colspan="5" class="text-center">Belum ada data</td>
+                <td colspan="5" class="text-center">Belum ada news</td>
               </tr>
             @endforelse
           </tbody>
