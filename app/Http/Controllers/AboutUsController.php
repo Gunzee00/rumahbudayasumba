@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\AboutUs;
+use App\Models\Footer;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class AboutUsController extends Controller
 {
 
-  public function showUser()
+ public function showUser()
 {
     $about  = AboutUs::latest()->first();
-    return view('user.about-us', compact('about'));
+    $footer = Footer::first();  
+
+    return view('user.about-us', compact('about', 'footer'));
 }
 
     // Tampilkan semua data About Us
