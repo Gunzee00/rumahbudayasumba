@@ -6,11 +6,19 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\ContactUsController;
+ use App\Http\Controllers\SubHomeController;
 
-Route::get('/', function () {
-    return view('dashboard'); // pastikan ejaan benar
-});
+
+Route::get('/', [HomeController::class, 'showUser'])->name('user.home');
+Route::get('/about-home', [SubHomeController::class, 'showUser'])->name('user.subhome');
+Route::get('/about-us', [AboutUsController::class, 'showUser'])->name('user.about-us');
+
+Route::view('/contact-us', 'user.contact-us')->name('contact');
+Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact.store');
  
+
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -48,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
     // CRUD routes
     Route::post('/admin/news-management', [NewsController::class, 'store'])->name('news.store');
-    Route::post('/admin/news-management/update/{id}', [NewsController::class, 'update'])->name('news.update');
+    Route::put('/admin/news-management/update/{id}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/admin/news-management/delete/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
 
 });
@@ -63,4 +71,36 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/footer-management/update/{id}', [FooterController::class, 'update'])->name('footer.update');
     Route::delete('/admin/footer-management/delete/{id}', [FooterController::class, 'destroy'])->name('footer.destroy');
 
+});
+
+Route::middleware('auth')->group(function () {
+    // Halaman About Us Management
+    Route::get('/admin/about-us', [AboutUsController::class, 'index'])->name('about.index');
+
+    // CRUD routes
+    Route::post('/admin/about-us', [AboutUsController::class, 'store'])->name('about.store');
+    Route::put('/admin/about-us/update/{id}', [AboutUsController::class, 'update'])->name('about.update');
+    Route::delete('/admin/about-us/delete/{id}', [AboutUsController::class, 'destroy'])->name('about.destroy');
+});
+
+
+
+Route::middleware('auth')->group(function () {
+    // Halaman Contact Us Management (admin lihat pesan user)
+    Route::get('/admin/contact-us', [ContactUsController::class, 'index'])->name('contact.index');
+
+    // Hapus pesan tertentu
+    Route::delete('/admin/contact-us/delete/{id}', [ContactUsController::class, 'destroy'])->name('contact.destroy');
+});
+Route::middleware('auth')->group(function () {
+    // Halaman Sub Home Management
+    Route::get('/admin/sub-home-management', [SubHomeController::class, 'index'])->name('subhome.index');
+
+    // CRUD routes
+    Route::post('/admin/sub-home-management', [SubHomeController::class, 'store'])->name('subhome.store');
+    Route::put('/admin/sub-home-management/update/{id}', [SubHomeController::class, 'update'])->name('subhome.update');
+    Route::delete('/admin/sub-home-management/delete/{id}', [SubHomeController::class, 'destroy'])->name('subhome.destroy');
+
+    // 👇 Tambahkan jika butuh show
+    Route::get('/admin/sub-home-management/{id}', [SubHomeController::class, 'show'])->name('subhome.show');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class GaleriController extends Controller
 {
@@ -22,10 +23,11 @@ class GaleriController extends Controller
             'caption' => 'nullable|string|max:255',
         ]);
 
-        $path = $request->file('image')->store('galeri', 'public');
+        // Upload ke Cloudinary
+        $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
 
         Galeri::create([
-            'image'   => $path,
+            'image'   => $uploadedFileUrl,
             'caption' => $request->caption,
         ]);
 
@@ -43,8 +45,9 @@ class GaleriController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('galeri', 'public');
-            $galeri->image = $path;
+            // Upload gambar baru ke Cloudinary
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $galeri->image = $uploadedFileUrl;
         }
 
         if ($request->caption !== null) {
@@ -60,6 +63,10 @@ class GaleriController extends Controller
     public function destroy($id)
     {
         $galeri = Galeri::findOrFail($id);
+
+        // Opsional: Hapus gambar di Cloudinary jika mau
+        // Cloudinary::destroy(public_id);
+
         $galeri->delete();
 
         return redirect()->back()->with('success', 'Gambar berhasil dihapus');

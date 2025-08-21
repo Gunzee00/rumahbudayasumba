@@ -22,12 +22,11 @@
         <form action="{{ route('galeri.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="mb-3">
-            <label>Gambar</label>
-            <input type="file" name="image" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label>Caption</label>
-            <input type="text" name="caption" class="form-control">
+            <label class="form-label">Gambar</label>
+            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" required>
+            @error('image')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
           <button type="submit" class="btn btn-primary">Tambah</button>
         </form>
@@ -38,13 +37,12 @@
     <div class="card">
       <div class="card-header">Daftar Galeri</div>
       <div class="card-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered align-middle">
           <thead>
             <tr>
-              <th>No</th>
-              <th>Gambar</th>
-              <th>Caption</th>
-              <th>Aksi</th>
+              <th style="width: 50px">No</th>
+              <th style="width: 150px">Gambar</th>
+              <th style="width: 200px">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -53,19 +51,22 @@
                 <td>{{ $index + 1 }}</td>
                 <td>
                   @if($item->image)
-                    <img src="{{ asset('storage/' . $item->image) }}" width="100">
+                    <img src="{{ $item->image }}" width="120" class="img-thumbnail">
                   @endif
                 </td>
-                <td>{{ $item->caption }}</td>
                 <td>
                   {{-- Tombol Edit --}}
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Edit</button>
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                    Edit
+                  </button>
 
                   {{-- Tombol Delete --}}
                   <form action="{{ route('galeri.destroy', $item->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
+                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">
+                      Hapus
+                    </button>
                   </form>
                 </td>
               </tr>
@@ -81,16 +82,17 @@
                     <div class="modal-body">
                       <form action="{{ route('galeri.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="mb-3">
-                          <label>Gambar Baru</label>
-                          <input type="file" name="image" class="form-control">
+                          <label class="form-label">Gambar Baru</label>
+                          <input type="file" name="image" class="form-control @error('image') is-invalid @enderror">
+                          @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
+
                           @if($item->image)
-                            <img src="{{ asset('storage/' . $item->image) }}" width="100" class="mt-2">
+                            <img src="{{ $item->image }}" width="120" class="mt-2 img-thumbnail">
                           @endif
-                        </div>
-                        <div class="mb-3">
-                          <label>Caption</label>
-                          <input type="text" name="caption" value="{{ $item->caption }}" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-success">Update</button>
                       </form>
@@ -99,9 +101,10 @@
                 </div>
               </div>
               {{-- End Modal --}}
+
             @empty
               <tr>
-                <td colspan="4" class="text-center">Belum ada data</td>
+                <td colspan="3" class="text-center">Belum ada data</td>
               </tr>
             @endforelse
           </tbody>

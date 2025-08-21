@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class NewsController extends Controller
 {
@@ -24,10 +24,11 @@ class NewsController extends Controller
             'desc'  => 'required|string',
         ]);
 
-        $path = $request->file('image')->store('news', 'public');
+        // Upload ke Cloudinary
+        $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
 
         News::create([
-            'image' => $path,
+            'image' => $uploadedFileUrl,
             'title' => $request->title,
             'desc'  => $request->desc,
         ]);
@@ -47,11 +48,9 @@ class NewsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // hapus gambar lama
-            if ($news->image && Storage::disk('public')->exists($news->image)) {
-                Storage::disk('public')->delete($news->image);
-            }
-            $news->image = $request->file('image')->store('news', 'public');
+            // Upload image baru ke Cloudinary
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $news->image = $uploadedFileUrl;
         }
 
         $news->title = $request->title;
@@ -66,10 +65,8 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
 
-        // hapus gambar lama
-        if ($news->image && Storage::disk('public')->exists($news->image)) {
-            Storage::disk('public')->delete($news->image);
-        }
+        // Opsional: hapus image di Cloudinary jika mau
+        // Cloudinary::destroy(public_id);
 
         $news->delete();
 

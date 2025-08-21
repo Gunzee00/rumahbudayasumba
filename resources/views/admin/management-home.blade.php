@@ -39,86 +39,83 @@
     </div>
 
     {{-- Card Data List --}}
-    <div class="card">
-      <div class="card-header">Daftar Home</div>
-      <div class="card-body">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Image</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($homes as $index => $home)
-              <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>
-                  @if($home->main_image)
-                    <img src="{{ asset('storage/' . $home->main_image) }}" width="100">
-                  @endif
-                </td>
-                <td>{{ $home->title }}</td>
-                <td>{{ $home->desc }}</td>
-                <td>
-                  {{-- Tombol Edit --}}
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $home->id }}">Edit</button>
+<div class="card">
+  <div class="card-header">Daftar Home</div>
+  <div class="card-body">
+    @forelse($homes as $index => $home)
+      <div class="card mb-3 shadow-sm">
+        <div class="row g-0 align-items-center">
+          {{-- Kolom Gambar --}}
+          <div class="col-md-3 text-center p-2">
+            @if($home->main_image)
+              <img src="{{ $home->main_image }}" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;">
+            @else
+              <span class="text-muted">No Image</span>
+            @endif
+          </div>
 
-                  {{-- Tombol Delete --}}
-                  <form action="{{ route('home.destroy', $home->id) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
-                  </form>
-                </td>
-              </tr>
+          {{-- Kolom Konten --}}
+          <div class="col-md-6 p-3">
+            <h5 class="mb-1">{{ $home->title }}</h5>
+            <p class="mb-0 text-muted">{{ $home->desc }}</p>
+          </div>
 
-              {{-- Modal Edit --}}
-              <div class="modal fade" id="editModal{{ $home->id }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Edit Data</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="{{ route('home.update', $home->id) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                          <label>Main Image</label>
-                          <input type="file" name="main_image" class="form-control">
-                          @if($home->main_image)
-                            <img src="{{ asset('storage/' . $home->main_image) }}" width="100" class="mt-2">
-                          @endif
-                        </div>
-                        <div class="mb-3">
-                          <label>Title</label>
-                          <input type="text" name="title" value="{{ $home->title }}" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                          <label>Description</label>
-                          <textarea name="desc" class="form-control" rows="3" required>{{ $home->desc }}</textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success">Update</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {{-- End Modal --}}
-            @empty
-              <tr>
-                <td colspan="5" class="text-center">Belum ada data</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
+          {{-- Kolom Aksi --}}
+          <div class="col-md-3 text-end p-3">
+            {{-- Tombol Edit --}}
+            <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $home->id }}">Edit</button>
+
+            {{-- Tombol Delete --}}
+            <form action="{{ route('home.destroy', $home->id) }}" method="POST" class="d-inline">
+              @csrf
+              @method('DELETE')
+              <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {{-- Modal Edit --}}
+      <div class="modal fade" id="editModal{{ $home->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Data</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{{ route('home.update', $home->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="mb-3">
+                  <label>Main Image</label>
+                  <input type="file" name="main_image" class="form-control">
+                  @if($home->main_image)
+                    <img src="{{ $home->main_image }}" width="100" class="img-thumbnail mt-2">
+                  @endif
+                </div>
+                <div class="mb-3">
+                  <label>Title</label>
+                  <input type="text" name="title" value="{{ $home->title }}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label>Description</label>
+                  <textarea name="desc" class="form-control" rows="3" required>{{ $home->desc }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Update</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{-- End Modal --}}
+
+    @empty
+      <div class="text-center text-muted">Belum ada data</div>
+    @endforelse
+  </div>
+</div>
+
 
   </div>
 </div>
