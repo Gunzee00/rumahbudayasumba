@@ -18,7 +18,7 @@
               @if($about && $about->image)
                 <img src="{{ $about->image }}" alt="{{ $about->title }}" class="img-fluid main-image">
               @else
-                <img src="assets-user/img/hotel/showcase-9.webp" alt="Hotel Exterior" class="img-fluid main-image">
+                <img src="assets-user-user/img/hotel/showcase-9.webp" alt="Hotel Exterior" class="img-fluid main-image">
               @endif
             </div>
           </div>
@@ -45,68 +45,60 @@
     </div>
   </section><!-- /About Section -->
 
-  
-    <!-- Rooms Showcase Section -->
-    <section id="rooms-showcase" class="rooms-showcase section">
+<section id="offer-cards" class="offer-cards section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <span class="description-title">Rooms</span>
-        <h2>Rooms</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <span class="description-title">Offers</span>
+    <h2>Offers</h2>
+    <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+  </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row gy-5">
-          <div class="col-xl-8" data-aos="zoom-in" data-aos-delay="200">
-            <div class="hero-room-showcase">
-              <div class="showcase-image-container">
-                <img src="assets-user/img/hotel/room-14.webp" alt="Grand Presidential Suite" class="img-fluid">
-                <div class="room-category-badge">
-                  <span>Presidential</span>
-                </div>
-                <div class="room-details-overlay">
-                  <div class="room-specs">
-                    <span class="spec-item">
-                      <i class="bi bi-people"></i>
-                      <span>6 Guests</span>
-                    </span>
-                    <span class="spec-item">
-                      <i class="bi bi-house"></i>
-                      <span>180m²</span>
-                    </span>
-                    <span class="spec-item">
-                      <i class="bi bi-geo-alt"></i>
-                      <span>Top Floor</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="showcase-content">
-                <div class="room-title-section">
-                  <h2>Grand Presidential Suite</h2>
-                  <div class="room-rating">
-                    <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <span class="rating-text">5.0 Excellence</span>
-                  </div>
-                </div>
-                <p class="room-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-           
-               
-              </div>
+    <div class="row g-4">
+      @forelse($rooms as $room)
+        <div class="col-lg-4 col-md-6">
+          <div class="offer-card" data-aos="zoom-in" data-aos-delay="200">
+              <a href="{{ route('room.detail', $room->id) }}" class="room-card d-block text-decoration-none text-dark h-100">
+
+            <!-- Room Image -->
+            <div class="offer-image">
+              @if($room->image)
+                <img src="{{ $room->image }}" alt="{{ $room->name_room }}" class="img-fluid">
+              @else
+                <img src="assets-user/img/hotel/showcase-3.webp" alt="{{ $room->name_room }}" class="img-fluid">
+              @endif
             </div>
-          </div><!-- End Hero Room -->
-        </div>
-      </div>
 
-    </section><!-- /Rooms Showcase Section -->
+            <!-- Room Content -->
+            <div class="offer-content">
+              <h3>{{ $room->name_room }}</h3>
+              <p>{{ \Illuminate\Support\Str::limit($room->desc, 100, '...') }}</p>
+              <div class="offer-details">
+                <div class="price-info">
+                  <span class="offer-price">${{ number_format($room->price, 0, ',', '.') }}</span>
+                  <span class="per-night">per night</span>
+                </div>
+              </div>
+              <a href="{{ route('room.detail', $room->id) }}" class="btn-book">Book Now</a>
+            </div>
+
+          </div>
+           </a>
+        </div>
+      @empty
+        <div class="col-12 text-center">
+          <p>Belum ada room tersedia.</p>
+        </div>
+      @endforelse
+    </div>
+
+</div>
+
+</section><!-- /Offer Cards Section -->
+
+
 
 </main>
 

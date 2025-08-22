@@ -9,6 +9,8 @@ use App\Http\Controllers\FooterController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ContactUsController;
  use App\Http\Controllers\SubHomeController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\BookingController;
 
 
 Route::get('/', [HomeController::class, 'showUser'])->name('user.home');
@@ -17,90 +19,94 @@ Route::get('/about-us', [AboutUsController::class, 'showUser'])->name('user.abou
 
 Route::view('/contact-us', 'user.contact-us')->name('contact');
 Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact.store');
- 
 
+Route::get('/rooms', [RoomController::class, 'showUser']);
+Route::get('/room/{id}', [RoomController::class, 'roomDetail'])->name('room.detail');
+ // web.php
+
+// routes/web.php
+
+
+Route::get('/booking/{room}', [BookingController::class, 'create'])
+    ->name('booking.create')
+    ->middleware('auth');
+
+Route::post('/booking/{room}', [BookingController::class, 'store'])
+    ->name('booking.store')
+    ->middleware('auth');
+
+    Route::get('/my-bookings', [BookingController::class, 'myBookings'])
+    ->name('booking.myBookings')
+    ->middleware('auth');
+ 
+// Auth routes
+ 
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+ 
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
- 
+ Route::post('/logout', [AuthController::class, 'logoutUser'])->name('logout');
 
 
-// Dashboard (protected)
-Route::get('/admin-dashboard', [HomeController::class, 'dashboard'])->middleware('auth')->name('admin.dashboard');
-Route::get('/admin/home-management', [HomeController::class, 'index'])->name('home.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [AuthController::class, 'profileUser'])->name('user.profile');
+});
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Dashboard
+    Route::get('/admin-dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+
+    // Home management
     Route::resource('/admin/home-management', HomeController::class)->names([
         'index' => 'home.index',
         'store' => 'home.store',
         'update' => 'home.update',
         'destroy' => 'home.destroy',
     ])->except(['create', 'edit', 'show']);
-});
 
-
-Route::middleware('auth')->group(function () {
+    // Galeri
     Route::get('/admin/galeri', [GaleriController::class, 'index'])->name('galeri.index');
     Route::post('/admin/galeri/store', [GaleriController::class, 'store'])->name('galeri.store');
     Route::post('/admin/galeri/update/{id}', [GaleriController::class, 'update'])->name('galeri.update');
     Route::delete('/admin/galeri/destroy/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
-});
 
-Route::middleware('auth')->group(function () {
-
-    // Halaman news management
+    // News
     Route::get('/admin/news-management', [NewsController::class, 'index'])->name('news.index');
-
-    // CRUD routes
     Route::post('/admin/news-management', [NewsController::class, 'store'])->name('news.store');
     Route::put('/admin/news-management/update/{id}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/admin/news-management/delete/{id}', [NewsController::class, 'destroy'])->name('news.destroy');
 
-});
-
-Route::middleware('auth')->group(function () {
-
-    // Halaman footer management
+    // Footer
     Route::get('/admin/footer-management', [FooterController::class, 'index'])->name('footer.index');
-
-    // CRUD routes
     Route::post('/admin/footer-management', [FooterController::class, 'store'])->name('footer.store');
     Route::post('/admin/footer-management/update/{id}', [FooterController::class, 'update'])->name('footer.update');
     Route::delete('/admin/footer-management/delete/{id}', [FooterController::class, 'destroy'])->name('footer.destroy');
 
-});
-
-Route::middleware('auth')->group(function () {
-    // Halaman About Us Management
+    // About Us
     Route::get('/admin/about-us', [AboutUsController::class, 'index'])->name('about.index');
-
-    // CRUD routes
     Route::post('/admin/about-us', [AboutUsController::class, 'store'])->name('about.store');
     Route::put('/admin/about-us/update/{id}', [AboutUsController::class, 'update'])->name('about.update');
     Route::delete('/admin/about-us/delete/{id}', [AboutUsController::class, 'destroy'])->name('about.destroy');
-});
 
-
-
-Route::middleware('auth')->group(function () {
-    // Halaman Contact Us Management (admin lihat pesan user)
+    // Contact Us
     Route::get('/admin/contact-us', [ContactUsController::class, 'index'])->name('contact.index');
-
-    // Hapus pesan tertentu
     Route::delete('/admin/contact-us/delete/{id}', [ContactUsController::class, 'destroy'])->name('contact.destroy');
-});
-Route::middleware('auth')->group(function () {
-    // Halaman Sub Home Management
-    Route::get('/admin/sub-home-management', [SubHomeController::class, 'index'])->name('subhome.index');
 
-    // CRUD routes
+    // Sub Home
+    Route::get('/admin/sub-home-management', [SubHomeController::class, 'index'])->name('subhome.index');
     Route::post('/admin/sub-home-management', [SubHomeController::class, 'store'])->name('subhome.store');
     Route::put('/admin/sub-home-management/update/{id}', [SubHomeController::class, 'update'])->name('subhome.update');
     Route::delete('/admin/sub-home-management/delete/{id}', [SubHomeController::class, 'destroy'])->name('subhome.destroy');
-
-    // 👇 Tambahkan jika butuh show
     Route::get('/admin/sub-home-management/{id}', [SubHomeController::class, 'show'])->name('subhome.show');
+
+    // Room
+    Route::get('/admin/room-management', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/admin/room-management', [RoomController::class, 'store'])->name('rooms.store');
+    Route::put('/admin/room-management/{room}', [RoomController::class, 'update'])->name('rooms.update');
+    Route::delete('/admin/room-management/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
 });

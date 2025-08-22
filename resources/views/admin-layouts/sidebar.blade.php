@@ -77,6 +77,25 @@
           </a>
         </li>
        <li class="nav-item">
+       <li class="nav-item">
+         <li class="nav-item">
+          <a class="nav-link " href="{{ route('rooms.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-app text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Room Management </span>
+          </a>
+        </li>
+       <li class="nav-item">
+         <li class="nav-item">
+          <a class="nav-link " href="{{ route('rooms.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-app text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Booking Room </span>
+          </a>
+        </li>
+       <li class="nav-item">
   <form action="{{ route('logout') }}" method="POST">
     @csrf
     <button type="submit" class="nav-link border-0 bg-transparent p-0">

@@ -54,17 +54,18 @@
                       @enderror
                     </div>
 
-                    {{-- Remember Me --}}
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
-                      <label class="form-check-label" for="rememberMe">Remember me</label>
-                    </div>
-
                     {{-- Submit --}}
                     <div class="text-center">
                       <button type="submit" class="btn btn-lg btn-primary w-100 mt-4 mb-0">Login</button>
                     </div>
                   </form>
+
+                  {{-- Tombol ke register --}}
+<div class="text-center mt-3">
+  <p class="mb-0">Belum punya akun?</p>
+  <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg w-100 mt-2">Daftar Sekarang</a>
+</div>
+
 
                   {{-- Error umum --}}
                   @if ($errors->any())
