@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Room;
+use App\Models\Footer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -15,7 +16,7 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Booking::with(['user', 'room'])->latest()->get();
-        return view('admin.bookings.index', compact('bookings'));
+        return view('admin.management-booking', compact('bookings'));
     }
 
     /**
@@ -79,6 +80,49 @@ class BookingController extends Controller
     }
 
     /**
+ * Admin menyetujui booking.
+ */
+public function approve($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->status = 'confirmed';
+    $booking->save();
+
+    return back()->with('success', 'Booking berhasil disetujui.');
+}
+
+/**
+ * Admin menolak booking.
+ */
+public function reject($id)
+{
+    $booking = Booking::findOrFail($id);
+    $booking->status = 'canceled';
+    $booking->save();
+
+    return back()->with('success', 'Booking berhasil ditolak.');
+}
+
+/**
+ * Admin membatalkan approve (kembalikan ke pending).
+ */
+public function revertApproval($id)
+{
+    $booking = Booking::findOrFail($id);
+
+    // Hanya bisa dibatalkan kalau status sekarang "confirmed"
+    if ($booking->status !== 'confirmed') {
+        return back()->with('error', 'Hanya booking yang sudah disetujui yang bisa dibatalkan.');
+    }
+
+    $booking->status = 'pending';
+    $booking->save();
+
+    return back()->with('success', 'Approve booking berhasil dibatalkan (kembali ke pending).');
+}
+
+
+    /**
      * User bisa lihat daftar booking miliknya.
      */
     public function myBookings()
@@ -87,14 +131,16 @@ class BookingController extends Controller
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
+             $footer = Footer::first();  
 
-        return view('user.booking-order', compact('bookings'));
+        return view('user.booking-order', compact('bookings', 'footer'));
     }
 
     public function create($roomId)
 {
     $room = Room::findOrFail($roomId);
-    return view('user.booking', compact('room'));
+    $footer = Footer::first();  
+    return view('user.booking', compact('room', 'footer'));
 }
 
 }

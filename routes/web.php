@@ -24,7 +24,7 @@ Route::get('/rooms', [RoomController::class, 'showUser']);
 Route::get('/room/{id}', [RoomController::class, 'roomDetail'])->name('room.detail');
  // web.php
 
-// routes/web.php
+ 
 
 
 Route::get('/booking/{room}', [BookingController::class, 'create'])
@@ -109,4 +109,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/room-management', [RoomController::class, 'store'])->name('rooms.store');
     Route::put('/admin/room-management/{room}', [RoomController::class, 'update'])->name('rooms.update');
     Route::delete('/admin/room-management/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+
+    // Admin Booking Management
+  // Admin Booking Management
+Route::get('/booking', [BookingController::class, 'index'])->name('admin.management-booking');
+Route::post('/booking/{id}/approve', [BookingController::class, 'approve'])->name('admin.management-booking.approve');
+Route::post('/booking/{id}/reject', [BookingController::class, 'reject'])->name('admin.management-booking.reject');
+Route::post('/booking/{id}/revert', [BookingController::class, 'revertApproval'])->name('admin.management-booking.revert');
+
 });

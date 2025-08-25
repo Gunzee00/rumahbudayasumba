@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactUs;
+use App\Models\Footer;
 
 class ContactUsController extends Controller
 {
@@ -28,9 +29,9 @@ class ContactUsController extends Controller
 
     // Tampilkan semua pesan di admin
     public function index()
-    {
+    {         
         $messages = ContactUs::latest()->get();
-        return view('admin.admin-massage', compact('messages'));
+        return view('admin.admin-massage', compact('messages',  ));
     }
 
     // Hapus pesan

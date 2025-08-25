@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Footer;
 
 class AuthController extends Controller
 {
@@ -106,7 +107,9 @@ class AuthController extends Controller
     public function profileUser()
     {
         $user = Auth::user(); // ambil user yang sedang login
+        $footer = Footer::first();  
 
-        return view('user.profile', compact('user'));
+
+        return view('user.profile', compact('user', 'footer'));
     }
 }

@@ -13,7 +13,7 @@
             
             <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
                 <div class="hero-content">
-                    <h1>{{ $home->title ?? 'Default Title' }}</h1>
+<h1 style="color: #38220F;">{{ $home->title ?? 'Default Title' }}</h1>
                     <p class="lead">{{ $home->desc ?? 'Default description...' }}</p>
                 </div>
             </div>

@@ -17,6 +17,7 @@ class Booking extends Model
         'check_in',
         'check_out',
         'total_price',
+         'payment_proof',
         'status',
     ];
 

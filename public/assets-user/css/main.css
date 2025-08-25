@@ -22,9 +22,9 @@
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
 :root { 
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #40524d; /* Default color used for the majority of the text content across the entire website */
+  --default-color: #38220F; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #0d1f1a; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #2f5d50; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --accent-color: #38220F; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
@@ -42,7 +42,7 @@
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
 .light-background {
-  --background-color: #f1f6f5;
+  --background-color: #f1ede9;
   --surface-color: #ffffff;
 }
 
@@ -85,9 +85,10 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--heading-color);
+  color: #38220F;
   font-family: var(--heading-font);
 }
+
 
 /* PHP Email Form Messages
 ------------------------------*/
@@ -145,7 +146,7 @@ h6 {
 # Global Header
 --------------------------------------------------------------*/
 .header {
-  --background-color: #436e62;
+  --background-color: #ffffff;
   --heading-color: #ffffff;
   color: var(--default-color);
   transition: all 0.5s;
@@ -489,11 +490,15 @@ h6 {
   font-size: 14px;
   position: relative;
 }
-
 .footer .footer-top {
-  background-color: color-mix(in srgb, var(--background-color), white 5%);
+  background-color: #38220F;
   padding-top: 50px;
 }
+
+.container.custom-gap {
+  margin-bottom: 50px; /* atur sesuai kebutuhan */
+}
+
 
 .footer .footer-about .logo {
   line-height: 1;
@@ -593,7 +598,7 @@ h6 {
 .footer .social-links a {
   font-size: 18px;
   display: inline-block;
-  background: color-mix(in srgb, var(--default-color), transparent 92%);
+  background: whitesmoke;
   color: var(--accent-color);
   line-height: 1;
   padding: 8px 0;

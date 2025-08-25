@@ -3,7 +3,7 @@
 @section('title', 'Home - Grandoria')
 
 @section('content')
-<div class="container mt-5 d-flex justify-content-center">
+<div class="container mt-5 d-flex justify-content-center custom-gap">
     <div class="card shadow-lg border-0 rounded-4" style="max-width: 500px; width: 100%;">
         <div class="card-body text-center p-4">
             {{-- Avatar --}}
