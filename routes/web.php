@@ -11,7 +11,10 @@ use App\Http\Controllers\ContactUsController;
  use App\Http\Controllers\SubHomeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FacilityController;
 
+
+Route::get('/facilities-user', action: [FacilityController::class, 'showUser'])->name('user.facilities');
 
 Route::get('/', [HomeController::class, 'showUser'])->name('user.home');
 Route::get('/about-home', [SubHomeController::class, 'showUser'])->name('user.subhome');
@@ -22,7 +25,8 @@ Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact
 
 Route::get('/rooms', [RoomController::class, 'showUser']);
 Route::get('/room/{id}', [RoomController::class, 'roomDetail'])->name('room.detail');
- // web.php
+ 
+//facility
 
  
 
@@ -116,5 +120,17 @@ Route::get('/booking', [BookingController::class, 'index'])->name('admin.managem
 Route::post('/booking/{id}/approve', [BookingController::class, 'approve'])->name('admin.management-booking.approve');
 Route::post('/booking/{id}/reject', [BookingController::class, 'reject'])->name('admin.management-booking.reject');
 Route::post('/booking/{id}/revert', [BookingController::class, 'revertApproval'])->name('admin.management-booking.revert');
+
+// Facility Management (Admin)
+  Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities');
+
+    // tambah facility
+    Route::post('/facilities', [FacilityController::class, 'store'])->name('admin.facilities.store');
+
+    // update facility
+    Route::put('/facilities/{id}', [FacilityController::class, 'update'])->name('admin.facilities.update');
+
+    // hapus facility
+    Route::delete('/facilities/{id}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
 
 });

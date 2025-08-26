@@ -22,7 +22,8 @@
 </head>
 <body class="g-sidenav-show bg-gray-100">
   
-  <div class="min-height-300 bg-dark position-absolute w-100"></div>
+  <div class="min-height-300 position-absolute w-100" style="background-color: #D9C6A5"></div>
+
 
   {{-- Sidebar --}}
   @include('admin-layouts.sidebar')

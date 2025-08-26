@@ -13,8 +13,8 @@
             
             <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
                 <div class="hero-content">
-<h1 style="color: #38220F;">{{ $home->title ?? 'Default Title' }}</h1>
-                    <p class="lead">{{ $home->desc ?? 'Default description...' }}</p>
+<h1 style="color: var(--heading-color);">{{ $home->title ?? 'Default Title' }}</h1>
+                    <p class="lead" style="color: var(--default-color);">{{ $home->desc ?? 'Default description...' }}</p>
                 </div>
             </div>
             
@@ -41,9 +41,9 @@
     <div class="row gy-4 align-items-center">
       <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
         <div class="about-content">
-          <h2>{{ $subhome->title ?? 'Default Title' }}</h2>
-          <p class="lead">{{ $subhome->sub_title ?? 'Default Subtitle' }}</p>
-          <p>{{ $subhome->description ?? 'Default Description' }}</p>
+          <h2 style="color: var(--heading-color);">{{ $subhome->title ?? 'Default Title' }}</h2>
+          <p class="lead" style="color: var(--default-color);" >{{ $subhome->sub_title ?? 'Default Subtitle' }}</p>
+          <p style="color: var(--default-color);">{{ $subhome->description ?? 'Default Description' }}</p>
           <div class="about-actions">
             <a href="about.html" class="btn-primary">Our Story</a>
             <a href="rooms.html" class="btn-secondary">View Rooms</a>
@@ -68,8 +68,8 @@
 <section id="events-cards" class="events-cards section">
   <div class="container section-title" data-aos="fade-up">
     <span class="description-title">Latest News</span>
-    <h2>Latest News</h2>
-    <p>The latest news in ruma sumba</p>
+    <h2 style="color: var(--heading-color);">Latest News</h2>
+    <p style="color: var(--default-color);">The latest news in ruma sumba</p>
   </div><!-- End Section Title -->
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">

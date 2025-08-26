@@ -5,7 +5,7 @@
 @section('content')
 <main class="main">
 
-  <!-- Rooms 2 Section -->
+  <!-- Rooms 2 Section -->  
   <section id="rooms-2" class="rooms-2 section">
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
