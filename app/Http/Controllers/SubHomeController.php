@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 use App\Models\SubHome;
 use Illuminate\Http\Request;
@@ -12,13 +13,29 @@ class SubHomeController extends Controller
      * Tampilkan semua data ke view
      */
 
-    public function show($id)
+public function show($id)
 {
     $subhome = SubHome::findOrFail($id);
-    return view('admin.subhome.show', compact('subhome'));
-}
- 
+    $subhomes = SubHome::all(); // tetap dikirim ke view
 
+    // 🔹 Hanya translate kalau dibutuhkan (misal di halaman user)
+    $locale = session('locale', 'id'); // default Indonesia
+    if ($locale != 'id') {
+        $tr = new GoogleTranslate($locale);
+
+        if (!empty($subhome->title))      $subhome->title      = $tr->translate($subhome->title);
+        if (!empty($subhome->sub_title))  $subhome->sub_title  = $tr->translate($subhome->sub_title);
+        if (!empty($subhome->description)) $subhome->description = $tr->translate($subhome->description);
+
+        foreach ($subhomes as $item) {
+            if (!empty($item->title))       $item->title       = $tr->translate($item->title);
+            if (!empty($item->sub_title))   $item->sub_title   = $tr->translate($item->sub_title);
+            if (!empty($item->description)) $item->description = $tr->translate($item->description);
+        }
+    }
+
+    return view('admin.management-subhome', compact('subhome', 'subhomes'));
+}
 
     public function index()
     {

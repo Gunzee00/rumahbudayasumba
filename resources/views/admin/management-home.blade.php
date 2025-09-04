@@ -33,8 +33,11 @@
             <label>Description</label>
             <textarea name="desc" class="form-control" rows="3" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Tambah</button>
-        </form>
+<button type="submit" 
+  class="btn btn-primary" 
+  style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">
+  Tambah
+</button>        </form>
       </div>
     </div>
 
@@ -61,17 +64,29 @@
           </div>
 
           {{-- Kolom Aksi --}}
-          <div class="col-md-3 text-end p-3">
-            {{-- Tombol Edit --}}
-            <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $home->id }}">Edit</button>
+        <div class="col-md-3 text-end p-3">
+  {{-- Tombol Edit --}}
+  <button 
+    class="btn btn-sm mb-1" 
+    data-bs-toggle="modal" 
+    data-bs-target="#editModal{{ $home->id }}"
+    style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">
+    Edit
+  </button>
 
-            {{-- Tombol Delete --}}
-            <form action="{{ route('home.destroy', $home->id) }}" method="POST" class="d-inline">
-              @csrf
-              @method('DELETE')
-              <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">Hapus</button>
-            </form>
-          </div>
+  {{-- Tombol Delete --}}
+  <form action="{{ route('home.destroy', $home->id) }}" method="POST" class="d-inline">
+    @csrf
+    @method('DELETE')
+    <button type="submit" 
+      onclick="return confirm('Yakin hapus data ini?')" 
+      class="btn btn-sm"
+      style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">
+      Hapus
+    </button>
+  </form>
+</div>
+
         </div>
       </div>
 

@@ -9,14 +9,33 @@ class Room extends Model
 {
     use HasFactory;
 
-    // Nama tabel (opsional kalau menggunakan nama default 'rooms')
-    protected $table = 'room';
+    protected $table = 'room'; // nama tabel
 
-    // Kolom yang bisa diisi massal
     protected $fillable = [
         'name_room',
         'price',
-        'image',
+        'jumlah_kamar',
+        'jumlah_tamu',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+        'image5',
+        'image6',
+        'image7',
+        'image8',
+        'image9',
+        'image10',
+        'fasilitas1',
+        'fasilitas2',
+        'fasilitas3',
+        'fasilitas4',
+        'fasilitas5',
+        'fasilitas6',
+        'fasilitas7',
+        'fasilitas8',
+        'fasilitas9',
+        'fasilitas10',
         'desc',
     ];
 }

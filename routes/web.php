@@ -10,9 +10,18 @@ use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\ContactUsController;
  use App\Http\Controllers\SubHomeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ArticleController;
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['id', 'en'])) {
+        session(['locale' => $locale]);
+        app()->setLocale($locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
 
 Route::get('/facilities-user', action: [FacilityController::class, 'showUser'])->name('user.facilities');
 
@@ -24,20 +33,20 @@ Route::view('/contact-us', 'user.contact-us')->name('contact');
 Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact.store');
 
 Route::get('/rooms', [RoomController::class, 'showUser']);
+
 Route::get('/room/{id}', [RoomController::class, 'roomDetail'])->name('room.detail');
- 
+
+Route::get('/articles-user', action: [ArticleController::class, 'articlesshowUser']);
 //facility
 
  
 
 
 Route::get('/booking/{room}', [BookingController::class, 'create'])
-    ->name('booking.create')
-    ->middleware('auth');
+    ->name('booking.create');
 
 Route::post('/booking/{room}', [BookingController::class, 'store'])
-    ->name('booking.store')
-    ->middleware('auth');
+    ->name('booking.store');
 
     Route::get('/my-bookings', [BookingController::class, 'myBookings'])
     ->name('booking.myBookings')
@@ -63,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     // Dashboard
-    Route::get('/admin-dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin-dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // Home management
     Route::resource('/admin/home-management', HomeController::class)->names([
@@ -121,6 +130,12 @@ Route::post('/booking/{id}/approve', [BookingController::class, 'approve'])->nam
 Route::post('/booking/{id}/reject', [BookingController::class, 'reject'])->name('admin.management-booking.reject');
 Route::post('/booking/{id}/revert', [BookingController::class, 'revertApproval'])->name('admin.management-booking.revert');
 
+//admin management artikel
+Route::get('/admin/articles-management', [ArticleController::class, 'index'])->name('admin.articles');
+Route::post('/admin/articles-management', [ArticleController::class, 'store'])->name('admin.articles.store');
+Route::put('/admin/articles-management/{id}', [ArticleController::class, 'update'])->name('admin.articles.update');
+Route::delete('/admin/articles-management/{id}', [ArticleController::class, 'destroy'])->name('admin.articles.destroy');
+
 // Facility Management (Admin)
   Route::get('/facilities', [FacilityController::class, 'index'])->name('admin.facilities');
 
@@ -132,5 +147,6 @@ Route::post('/booking/{id}/revert', [BookingController::class, 'revertApproval']
 
     // hapus facility
     Route::delete('/facilities/{id}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
+
 
 });

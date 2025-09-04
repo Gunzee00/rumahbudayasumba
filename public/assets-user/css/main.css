@@ -25,6 +25,7 @@
   --heading-color: #7B1E1E;        /* Merah marun → heading, title */
   --accent-color: #7B1E1E;         /* Merah marun → tombol, link, highlight */
   --surface-color: #D9C6A5;        /* Beige → card, box, surface section */
+
   --contrast-color: #FFFFFF;       /* Putih → teks kontras di atas warna gelap */
 }
 
@@ -35,6 +36,7 @@
   --nav-mobile-background-color: #FFFFFF;   /* Background mobile nav */
   --nav-dropdown-background-color: #FFFFFF; /* Dropdown bg */
   --nav-dropdown-color: #8C6239;    /* Coklat kayu untuk link dropdown */
+  
   --nav-dropdown-hover-color: #7B1E1E; /* Hover dropdown → merah marun */
 }
 
@@ -3871,10 +3873,11 @@ section,
 }
 
 .room-details .room-price .price-amount {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--heading-color);
+  color: #cc0606; /* merah tua sesuai kode warna yang dipakai sebelumnya */
 }
+
 
 .room-details .room-price .price-period {
   font-size: 16px;

@@ -23,7 +23,7 @@
           @csrf
           <div class="mb-3">
             <label>Gambar</label>
-            <input type="file" name="image" class="form-control" required>
+            <input type="file" name="image" class="form-control">
           </div>
           <div class="mb-3">
             <label>Title</label>
@@ -37,7 +37,7 @@
             <label>Description</label>
             <textarea name="description" class="form-control" rows="3" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Tambah</button>
+          <button type="submit" class="btn btn-primary"style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Tambah</button>
         </form>
       </div>
     </div>

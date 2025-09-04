@@ -45,7 +45,7 @@
                         <label>Instagram</label>
                         <input type="url" name="instagram" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Tambah</button>
                 </form>
             </div>
         </div>

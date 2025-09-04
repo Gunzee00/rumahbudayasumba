@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 use App\Models\Facility;
 use App\Models\Footer;
@@ -78,9 +79,27 @@ class FacilityController extends Controller
 
     // User: tampilkan fasilitas
     public function showUser()
-    {
-        $facilities = Facility::latest()->get();
-        $footer = Footer::first();
-        return view('user.facility', compact('facilities', 'footer'));
+{
+    $facilities = Facility::latest()->get();
+    $footer = Footer::first();
+
+    // 🔹 Cek locale aktif
+    $locale = session('locale', 'id'); // default Indonesia
+    if ($locale != 'id') {
+        $tr = new GoogleTranslate($locale);
+
+        // Translate fields Facility yang relevan
+        foreach ($facilities as $facility) {
+            if (!empty($facility->name))        $facility->name        = $tr->translate($facility->name);
+            if (!empty($facility->description)) $facility->description = $tr->translate($facility->description);
+        }
+
+        // Translate hanya address di Footer
+        if ($footer && !empty($footer->address)) {
+            $footer->address = $tr->translate($footer->address);
+        }
     }
+
+    return view('user.facility', compact('facilities', 'footer'));
+}
 }

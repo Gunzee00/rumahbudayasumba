@@ -33,7 +33,7 @@
             <label>Description</label>
             <textarea name="desc" class="form-control" rows="3" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Tambah</button>
+          <button type="submit" class="btn btn-primary" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Tambah</button>
         </form>
       </div>
     </div>
@@ -71,13 +71,13 @@
               </td>
               <td>
                 {{-- Tombol Edit --}}
-                <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">Edit</button>
+                <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Edit</button>
 
                 {{-- Tombol Delete --}}
                 <form action="{{ route('news.destroy', $item->id) }}" method="POST" class="d-inline">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" onclick="return confirm('Yakin hapus news ini?')" class="btn btn-danger btn-sm">Hapus</button>
+                  <button type="submit" onclick="return confirm('Yakin hapus news ini?')" class="btn btn-danger btn-sm" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Hapus</button>
                 </form>
               </td>
             </tr>

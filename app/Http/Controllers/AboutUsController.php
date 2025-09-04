@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 use App\Models\AboutUs;
 use App\Models\Footer;
@@ -11,13 +12,51 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 class AboutUsController extends Controller
 {
 
- public function showUser()
+//  public function showUser()
+// {
+//     $about  = AboutUs::latest()->first();
+//     $footer = Footer::first();  
+ 
+//     return view('user.about-us', compact('about', 'footer' ));
+// }
+
+public function showUser()
 {
-    $about  = AboutUs::latest()->first();
-    $footer = Footer::first();  
-  $rooms = Room::all();
-    return view('user.about-us', compact('about', 'footer', 'rooms'));
+    // Ambil data AboutUs
+    $abouts = AboutUs::orderBy('created_at', 'asc')->get();
+    $firstAbout = $abouts->first(); // untuk ditampilkan di atas sebelum peta
+    $otherAbouts = $abouts->skip(1); // sisanya untuk looping setelah peta
+
+    $footer = Footer::first();
+
+    // 🔹 Cek locale aktif
+    $locale = session('locale', 'id'); // default Indonesia
+    if ($locale != 'id') {
+        $tr = new GoogleTranslate($locale);
+
+        // Translate firstAbout
+        if ($firstAbout) {
+            if (!empty($firstAbout->title))       $firstAbout->title       = $tr->translate($firstAbout->title);
+            if (!empty($firstAbout->subtitle))    $firstAbout->subtitle    = $tr->translate($firstAbout->subtitle);
+            if (!empty($firstAbout->description)) $firstAbout->description = $tr->translate($firstAbout->description);
+        }
+
+        // Translate otherAbouts
+        foreach ($otherAbouts as $item) {
+            if (!empty($item->title))       $item->title       = $tr->translate($item->title);
+            if (!empty($item->subtitle))    $item->subtitle    = $tr->translate($item->subtitle);
+            if (!empty($item->description)) $item->description = $tr->translate($item->description);
+        }
+
+        // Translate footer
+        if ($footer && !empty($footer->address)) {
+            $footer->address = $tr->translate($footer->address);
+        }
+    }
+
+    return view('user.about-us', compact('firstAbout', 'otherAbouts', 'footer'));
 }
+
 
     // Tampilkan semua data About Us
     public function index()
@@ -32,28 +71,36 @@ class AboutUsController extends Controller
         return view('admin.create-aboutus'); // buat view terpisah jika perlu
     }
 
-    // Simpan data baru
+    
+
     public function store(Request $request)
-    {
-        $request->validate([
-            'image'       => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'title'       => 'required|string|max:150',
-            'subtitle'    => 'nullable|string|max:150',
-            'description' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'image'       => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        'title'       => 'required|string|max:150',
+        'subtitle'    => 'nullable|string|max:150',
+        'description' => 'required|string',
+    ]);
 
-        // Upload image ke Cloudinary
-        $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+    $uploadedFileUrl = null;
 
-        AboutUs::create([
-            'image'       => $uploadedFileUrl,
-            'title'       => $request->title,
-            'subtitle'    => $request->subtitle,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route('about.index')->with('success', 'Data berhasil ditambahkan.');
+    if ($request->hasFile('image')) {
+        // Upload image ke Cloudinary hanya jika ada file
+        $uploadedFileUrl = Cloudinary::upload(
+            $request->file('image')->getRealPath()
+        )->getSecurePath();
     }
+
+    AboutUs::create([
+        'image'       => $uploadedFileUrl, // bisa null kalau tidak ada gambar
+        'title'       => $request->title,
+        'subtitle'    => $request->subtitle,
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('about.index')->with('success', 'Data berhasil ditambahkan.');
+}
+
 
     // Form edit data (opsional, bisa di modal di halaman index)
     public function edit($id)

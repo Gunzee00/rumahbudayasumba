@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,7 +19,69 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets-admin/css/argon-dashboard.css?v=2.1.0') }}" rel="stylesheet" />
+
+  <!-- 🎨 Warna Custom -->
+  <style>
+    :root { 
+      --background-color: #FFFFFF;     /* Putih → background utama */
+      --default-color: #000000;        /* Hitam → teks utama */
+      --heading-color: #7B1E1E;        /* Merah marun → heading, title */
+      --accent-color: #7B1E1E;         /* Merah marun → tombol, link, highlight */
+      --surface-color: #D9C6A5;        /* Beige → card, box, surface section */
+      --contrast-color: #FFFFFF;       /* Putih → teks kontras di atas warna gelap */
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--default-color);
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--heading-color);
+    }
+
+    .btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--contrast-color);
+    transition: all 0.2s ease-in-out;
+  }
+  .btn-primary:hover {
+    background-color: var(--heading-color); /* warna heading biar beda sedikit */
+    border-color: var(--heading-color);
+    color: var(--contrast-color);
+  }
+
+  .btn-primary:active,
+  .btn-primary:focus {
+    background-color: var(--default-color); /* jadi hitam saat ditekan */
+    border-color: var(--default-color);
+    color: var(--contrast-color);
+    box-shadow: 0 0 0 0.25rem rgba(123, 30, 30, 0.3); /* efek fokus sesuai marun */
+  }
+
+    .btn-outline-secondary {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .btn-outline-secondary:hover {
+      background-color: var(--accent-color);
+      color: var(--contrast-color);
+    }
+
+    .card {
+      background-color: var(--surface-color);
+      border-radius: 12px;
+    }
+
+    .text-danger {
+      color: var(--heading-color) !important;
+    }
+  </style>
 </head>
+
 
 <body class="">
   <main class="main-content  mt-0">
@@ -61,10 +126,10 @@
                   </form>
 
                   {{-- Tombol ke register --}}
-<div class="text-center mt-3">
+{{-- <div class="text-center mt-3">
   <p class="mb-0">Belum punya akun?</p>
   <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg w-100 mt-2">Daftar Sekarang</a>
-</div>
+</div> --}}
 
 
                   {{-- Error umum --}}
@@ -78,15 +143,27 @@
    
               </div>
             </div>
-            <div
-              class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets-admin/master/argon-dashboard-pro/assets-admin/img/signin-ill.jpg'); background-size: cover;">
-                <span class="mask bg-gradient-primary opacity-6"></span>
-                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Attention is the new currency"</h4>
-                <p class="text-white position-relative">The more effortless the writing looks, the more effort the writer actually put into the process.</p>
-              </div>
-            </div>
+           <div
+  class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+  <div class="position-relative h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
+    style="background-color: var(--surface-color);">
+    
+    <!-- ✅ Tambahkan Logo di atas Judul -->
+    <img src="{{ asset('assets-admin/img/logo.png') }}" 
+         alt="Logo Rumah Budaya Sumba" 
+         class="mx-auto mb-3" 
+         style="max-width: 320px; height: auto;">
+
+    <h1 class="mt-2 font-weight-bolder position-relative" style="color: var(--accent-color);">
+        Rumah Budaya Sumba
+    </h1>
+    <p class="position-relative" style="color: var(--accent-color);">
+      The more effortless the writing looks, the more effort the writer actually put into the process.
+    </p>
+  </div>
+</div>
+
+
           </div>
         </div>
       </div>

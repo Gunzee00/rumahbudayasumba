@@ -19,41 +19,50 @@
                 
                 <!-- Room Image -->
                 <div class="room-image">
-                  @if($room->image)
-                    <img src="{{ $room->image }}" alt="{{ $room->name_room }}" class="img-fluid rounded">
+                  @if($room->image1)
+                    <img src="{{ $room->image1 }}" alt="{{ $room->name_room }}" class="img-fluid rounded">
                   @else
                     <img src="assets-user/img/hotel/room-1.webp" alt="{{ $room->name_room }}" class="img-fluid rounded">
                   @endif
                 </div>
 
-                <!-- Room Content -->
-                <div class="room-content p-3">
-                  <div class="room-header mb-2">
-                    <h3 class="h5">{{ $room->name_room }}</h3>
-                  </div>
+           
+<div class="room-content p-3">
+  <div class="room-header mb-2">
+    <h3 class="h5">{{ $room->name_room }}</h3>
+  </div>
 
-                  <p class="room-description mb-3">
-                    {{ \Illuminate\Support\Str::limit($room->desc, 20, '...') }}
-                  </p>
+   
+  <!-- Jumlah Kamar & Jumlah Tamu -->
+  <div class="room-info d-flex gap-3 mb-3">
+    <p class="mb-0 d-flex align-items-center">
+      <i class="bi bi-house-door me-1"></i>
+      {{ $room->jumlah_kamar }} Kamar
+    </p>
+    <p class="mb-0 d-flex align-items-center">
+      <i class="bi bi-people me-1"></i>
+      {{ $room->jumlah_tamu }} Tamu
+    </p>
+  </div>
 
-                  <div class="room-footer d-flex justify-content-between align-items-center">
-                    <div class="room-price">
-                      <span class="price-from">From</span>
-                      <span class="price-amount">${{ number_format($room->price, 0, ',', '.') }}</span>
-                      <span class="price-period">/ night</span>
-                    </div>
-                  <span
-  class="btn-room-details btn btn-primary btn-sm"
-  role="button"
-  tabindex="0"
-  onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ route('booking.create', $room->id) }}';"
-  onkeydown="if(event.key==='Enter'||event.key===' '){ event.preventDefault(); event.stopPropagation(); window.location.href='{{ route('booking.create', $room->id) }}'; }"
->
-  Book Now
-</span>
+  <div class="room-footer d-flex justify-content-between align-items-center">
+    <div class="room-price">
+      <span class="price-from">From</span>
+      <span class="price-amount">Rp {{ number_format($room->price, 0, ',', '.') }}</span>
+      <span class="price-period">/ night</span>
+    </div>
+    <span
+      class="btn-room-details btn btn-primary btn-sm"
+      role="button"
+      tabindex="0"
+      onclick="event.preventDefault(); event.stopPropagation(); window.location.href='{{ route('booking.create', $room->id) }}';"
+      onkeydown="if(event.key==='Enter'||event.key===' '){ event.preventDefault(); event.stopPropagation(); window.location.href='{{ route('booking.create', $room->id) }}'; }"
+    >
+      Book Now
+    </span>
+  </div>
+</div>
 
-                  </div>
-                </div>
 
               </a><!-- End Room Card -->
 

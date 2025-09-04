@@ -3,28 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use App\Models\ContactUs;
-use App\Models\User;
- 
-use Illuminate\Routing\Controller as BaseController;
 
-class DashboardController extends BaseController
+class DashboardController extends Controller
 {
     public function index()
     {
-        // Hitung jumlah booking ruangan
-        $totalBookings = Booking::count();
+        // Ambil semua booking dengan relasi room
+        $bookings = Booking::with('room')->get();
 
-        // Hitung jumlah user yang booking (unik)
-        $totalUsersBooking = Booking::distinct('user_id')->count('user_id');
+        // Format data booking ke event FullCalendar
+        $events = [];
+        foreach ($bookings as $booking) {
+            $events[] = [
+                'title' => $booking->customer_name . ' - ' . $booking->room->name_room,
+                'start' => $booking->check_in,
+                'end'   => $booking->check_out,
+                'url'   => route('admin.management-booking', $booking->id), // klik tanggal → detail booking
+            ];
+        }
 
-        // Hitung jumlah pesan (kalau ada tabel messages)
-        $totalMessages = ContactUs::count();
-
-        return view('admin.dashboard', compact(
-            'totalBookings',
-            'totalUsersBooking',
-            'totalMessages'
-        ));
+        return view('admin.admin-dashboard', compact('events'));
     }
 }

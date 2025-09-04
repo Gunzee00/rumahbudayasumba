@@ -9,25 +9,22 @@ class Booking extends Model
 {
     use HasFactory;
 
+    // Pastikan sesuai dengan nama tabel
     protected $table = 'booking';
 
+    // Kolom yang bisa diisi (fillable)
     protected $fillable = [
-        'user_id',
+        'customer_name',
+        'phone_number',
+        'email',
         'room_id',
         'check_in',
         'check_out',
         'total_price',
-         'payment_proof',
+        'guest_count',
+        'special_request',
         'status',
     ];
-
-    /**
-     * Relasi ke User
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     /**
      * Relasi ke Room

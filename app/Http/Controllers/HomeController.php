@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 use App\Models\Home;
 use App\Models\SubHome;
@@ -28,14 +29,41 @@ class HomeController extends Controller
 
 public function showUser()
 {
-    // Ambil data pertama dari tabel home
+    // Ambil data
     $home = Home::first(); 
     $subhome = SubHome::first(); 
-    $news = News::latest()->take(6)->get(); // ambil max 6 berita terbaru
-    $galeri = Galeri::latest()->take(10)->get(); // ambil max 10 gambar
-    $footer = Footer::first(); // ambil data footer (biasanya cuma 1 record)
+    $news = News::latest()->take(6)->get(); 
+    $galeri = Galeri::latest()->take(10)->get(); 
+    $footer = Footer::first(); 
 
-    // Kirim ke view user (dashboard.blade.php)
+    // Cek locale aktif
+    $locale = session('locale', 'id'); // default Indonesia
+    $tr = new GoogleTranslate($locale);
+
+    // Translate data utama (jika locale != id)
+    if ($locale != 'id') {
+        if ($home) {
+            if (!empty($home->title)) $home->title = $tr->translate($home->title);
+            if (!empty($home->desc))  $home->desc  = $tr->translate($home->desc);
+        }
+
+        if ($subhome) {
+            if (!empty($subhome->title)) $subhome->title = $tr->translate($subhome->title);
+            if (!empty($subhome->sub_title)) $subhome->sub_title = $tr->translate($subhome->sub_title);
+            if (!empty($subhome->description))  $subhome->description  = $tr->translate($subhome->description);
+        }
+
+        foreach ($news as $item) {
+            if (!empty($item->title))   $item->title   = $tr->translate($item->title);
+            if (!empty($item->content)) $item->content = $tr->translate($item->content);
+        }
+
+        if ($footer) {
+            if (!empty($footer->address)) $footer->address = $tr->translate($footer->address);
+        }
+    }
+
+    // Kirim ke view
     return view('dashboard', compact('home', 'subhome', 'news', 'galeri', 'footer'));
 }
 

@@ -16,80 +16,56 @@
     @endif
 
     {{-- Card Daftar Booking --}}
-    <div class="card">
-      <div class="card-header">Daftar Booking</div>
-      <div class="card-body">
-        <table class="table table-bordered align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th>No</th>
-              <th>User</th>
-              <th>Kamar</th>
-              <th>Check-in</th>
-              <th>Check-out</th>
-              <th>Total Harga</th>
-              <th>Bukti Pembayaran</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($bookings as $index => $booking)
-              <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $booking->user->username ?? $booking->user->name }}</td>
-                <td>{{ $booking->room->name_room }}</td>
-                <td>{{ \Carbon\Carbon::parse($booking->check_in)->format('d M Y') }}</td>
-                <td>{{ \Carbon\Carbon::parse($booking->check_out)->format('d M Y') }}</td>
-                <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
-                <td>
-                  <a href="{{ $booking->payment_proof }}" target="_blank">
-                    <img src="{{ $booking->payment_proof }}" width="80" class="img-thumbnail">
-                  </a>
-                </td>
-                <td>
-                  <span class="badge 
-                    @if($booking->status == 'pending') bg-warning text-dark
-                    @elseif($booking->status == 'confirmed') bg-success
-                    @elseif($booking->status == 'canceled') bg-danger
-                    @else bg-secondary @endif">
-                    {{ ucfirst($booking->status) }}
-                  </span>
-                </td>
-              <td>
-  @if($booking->status == 'pending')
-      {{-- Tombol Approve --}}
-      <form action="{{ route('admin.management-booking.approve', $booking->id) }}" method="POST" class="d-inline">
-          @csrf
-          <button type="submit" class="btn btn-success btn-sm">Approve</button>
-      </form>
+    @forelse($bookings as $index => $booking)
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span><strong>Booking #{{ $index + 1 }}</strong></span>
+          {{-- <span class="badge 
+            @if($booking->status == 'pending') bg-warning text-dark
+            @elseif($booking->status == 'confirmed') bg-success
+            @elseif($booking->status == 'canceled') bg-danger
+            @else bg-secondary @endif">
+            {{ ucfirst($booking->status) }}
+          </span> --}}
+        </div>
+        <div class="card-body">
+          <p><strong>Customer:</strong> {{ $booking->customer_name }}</p>
+          <p><strong>Phone:</strong> {{ $booking->phone_number }}</p>
+          <p><strong>Email:</strong> {{ $booking->email }}</p>
+          <hr>
+          <p><strong>Room:</strong> {{ $booking->room->name_room }}</p>
+          <p><strong>Stay:</strong> 
+            {{ \Carbon\Carbon::parse($booking->check_in)->format('d M Y') }} - 
+            {{ \Carbon\Carbon::parse($booking->check_out)->format('d M Y') }}
+          </p>
+          <p><strong>Total Price:</strong> Rp {{ number_format($booking->total_price, 0, ',', '.') }}</p>
+          <p><strong>Guest:</strong> {{ $booking->guest_count }} Orang</p>
+          <p><strong>Special Request:</strong> {{ $booking->special_request ?? '-' }}</p>
+        </div>
+        <div class="card-footer">
+          @if($booking->status == 'pending')
+              {{-- <form action="{{ route('admin.management-booking.approve', $booking->id) }}" method="POST" class="d-inline">
+                  @csrf
+                  <button type="submit" class="btn btn-success btn-sm">Approve</button>
+              </form>
 
-      {{-- Tombol Reject --}}
-      <form action="{{ route('admin.management-booking.reject', $booking->id) }}" method="POST" class="d-inline">
-          @csrf
-          <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-      </form>
-  @elseif($booking->status == 'confirmed')
-      {{-- Tombol Batalkan Approve --}}
-      <form action="{{ route('admin.management-booking.revert', $booking->id) }}" method="POST" class="d-inline">
-          @csrf
-          <button type="submit" class="btn btn-warning btn-sm">Batalkan Approve</button>
-      </form>
-  @else
-      <span class="text-muted">Tidak ada aksi</span>
-  @endif
-</td>
-
-              </tr>
-            @empty
-              <tr>
-                <td colspan="9" class="text-center">Belum ada booking</td>
-              </tr>
-            @endforelse
-          </tbody>
-        </table>
+              <form action="{{ route('admin.management-booking.reject', $booking->id) }}" method="POST" class="d-inline">
+                  @csrf
+                  <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+              </form> --}}
+          @elseif($booking->status == 'confirmed')
+              <form action="{{ route('admin.management-booking.revert', $booking->id) }}" method="POST" class="d-inline">
+                  @csrf
+                  <button type="submit" class="btn btn-warning btn-sm">Batalkan Approve</button>
+              </form>
+          @else
+              <span class="text-muted">Tidak ada aksi</span>
+          @endif
+        </div>
       </div>
-    </div>
+    @empty
+      <div class="alert alert-info text-center">Belum ada booking</div>
+    @endforelse
 
   </div>
 </div>

@@ -28,7 +28,7 @@
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
-          <button type="submit" class="btn btn-primary">Tambah</button>
+          <button type="submit" class="btn btn-primary" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">Tambah</button>
         </form>
       </div>
     </div>
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                   {{-- Tombol Edit --}}
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">
                     Edit
                   </button>
 
@@ -64,7 +64,7 @@
                   <form action="{{ route('galeri.destroy', $item->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">
+                    <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm" style="background-color:#7B1E1E; border-color:#7B1E1E; color:#FFFFFF;">
                       Hapus
                     </button>
                   </form>
